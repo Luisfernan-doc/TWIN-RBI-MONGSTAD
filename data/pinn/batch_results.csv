@@ -1,0 +1,165 @@
+"Cylinder-Nozzle  3400mm (25 thk) x 300mm (11,3 thk)  ",,Header Next to Nozzle Weld [Mean] (Case 2),Pl+Pb < 1.5(k)Smh [Pb=0],195.11,206.84,94
+,,Header Next to Nozzle Weld [Bending] (Case 2),Qb < (3.0)Smavg,70.42,496.0,14
+,,Header Next to Nozzle Weld [Min. Principal] (Case 2),S1+S2+S3<4S (SUS),242.24,551.58,44
+,,Header away from Junction [Mean] (Case 2),Pl+Pb < 1.5(k)Smh [Pb=0],112.9,206.84,55
+,,Header away from Junction [Bending] (Case 2),Qb < (3.0)Smavg,26.88,496.0,5
+,,Header away from Junction [Min. Principal] (Case 2),S1+S2+S3<4S (SUS),181.51,551.58,33
+,,Branch Next to Header Weld [Mean] (Case 2),Pl+Pb < 1.5(k)Smh [Pb=0],182.06,206.84,88
+,,Branch Next to Header Weld [Bending] (Case 2),Qb < (3.0)Smavg,143.98,496.0,29
+,,Branch Next to Header Weld [Min. Principal] (Case 2),S1+S2+S3<4S (SUS),212.02,551.58,38
+,,Branch Transition [Mean] (Case 2),Pl+Pb < 1.5(k)Smh [Pb=0],37.48,206.84,18
+,,Branch Transition [Bending] (Case 2),Qb < (3.0)Smavg,39.69,496.0,8
+,,Branch Transition [Min. Principal] (Case 2),S1+S2+S3<4S (SUS),60.71,551.58,11
+,,Header Next to Nozzle Weld [In] (Case 3),Pl+Pb+Q < 3(k)Smavg ,225.91,496.0,46
+,,Header Next to Nozzle Weld [Out] (Case 3),Pl+Pb+Q < 3(k)Smavg ,187.66,496.0,38
+,,Header Next to Nozzle Weld [In] (Case 4),Pl+Pb+Q < 3(k)Smavg ,225.89,496.0,46
+,,Header Next to Nozzle Weld [Out] (Case 4),Pl+Pb+Q < 3(k)Smavg ,187.35,496.0,38
+,,Header away from Junction [In] (Case 3),Pl+Pb+Q < 3(k)Smavg ,117.24,496.0,24
+,,Header away from Junction [Out] (Case 3),Pl+Pb+Q < 3(k)Smavg ,108.59,496.0,22
+,,Header away from Junction [In] (Case 4),Pl+Pb+Q < 3(k)Smavg ,117.45,496.0,24
+,,Header away from Junction [Out] (Case 4),Pl+Pb+Q < 3(k)Smavg ,108.32,496.0,22
+,,Branch Next to Header Weld [In] (Case 3),Pl+Pb+Q < 3(k)Smavg ,254.55,496.0,51
+,,Branch Next to Header Weld [Out] (Case 3),Pl+Pb+Q < 3(k)Smavg ,206.03,496.0,42
+,,Branch Next to Header Weld [In] (Case 4),Pl+Pb+Q < 3(k)Smavg ,253.95,496.0,51
+,,Branch Next to Header Weld [Out] (Case 4),Pl+Pb+Q < 3(k)Smavg ,205.54,496.0,41
+,,Branch Transition [In] (Case 3),Pl+Pb+Q < 3(k)Smavg ,71.4,496.0,14
+,,Branch Transition [Out] (Case 3),Pl+Pb+Q < 3(k)Smavg ,60.87,496.0,12
+,,Branch Transition [In] (Case 4),Pl+Pb+Q < 3(k)Smavg ,71.31,496.0,14
+,,Branch Transition [Out] (Case 4),Pl+Pb+Q < 3(k)Smavg ,60.91,496.0,12
+,,Header Next to Nozzle Weld [In] (Case 4),Pl+Pb+Q+F < Sa,152.48,289.98,53
+,,Header away from Junction [In] (Case 4),Pl+Pb+Q+F < Sa,58.72,289.98,20
+,,Branch Next to Header Weld [In] (Case 4),Pl+Pb+Q+F < Sa,171.42,289.98,59
+,,Branch Transition [In] (Case 4),Pl+Pb+Q+F < Sa,35.66,289.98,12
+,,,,,,
+"Cylinder-Nozzle  3400mm (30 thk) x 300mm (11,3 thk)  ",,Header Next to Nozzle Weld [Mean] (Case 2),Pl+Pb < 1.5(k)Smh [Pb=0],161.83,206.84,78
+,,Header Next to Nozzle Weld [Bending] (Case 2),Qb < (3.0)Smavg,50.17,496.0,10
+,,Header Next to Nozzle Weld [Min. Principal] (Case 2),S1+S2+S3<4S (SUS),200.69,551.58,36
+,,Header away from Junction [Mean] (Case 2),Pl+Pb < 1.5(k)Smh [Pb=0],93.68,206.84,45
+,,Header away from Junction [Bending] (Case 2),Qb < (3.0)Smavg,21.93,496.0,4
+,,Header away from Junction [Min. Principal] (Case 2),S1+S2+S3<4S (SUS),150.83,551.58,27
+,,Branch Next to Header Weld [Mean] (Case 2),Pl+Pb < 1.5(k)Smh [Pb=0],148.08,206.84,72
+,,Branch Next to Header Weld [Bending] (Case 2),Qb < (3.0)Smavg,119.92,496.0,24
+,,Branch Next to Header Weld [Min. Principal] (Case 2),S1+S2+S3<4S (SUS),178.56,551.58,32
+,,Branch Transition [Mean] (Case 2),Pl+Pb < 1.5(k)Smh [Pb=0],32.32,206.84,16
+,,Branch Transition [Bending] (Case 2),Qb < (3.0)Smavg,34.18,496.0,7
+,,Branch Transition [Min. Principal] (Case 2),S1+S2+S3<4S (SUS),55.44,551.58,10
+,,Header Next to Nozzle Weld [In] (Case 3),Pl+Pb+Q < 3(k)Smavg ,185.42,496.0,37
+,,Header Next to Nozzle Weld [Out] (Case 3),Pl+Pb+Q < 3(k)Smavg ,151.89,496.0,31
+,,Header Next to Nozzle Weld [In] (Case 4),Pl+Pb+Q < 3(k)Smavg ,185.45,496.0,37
+,,Header Next to Nozzle Weld [Out] (Case 4),Pl+Pb+Q < 3(k)Smavg ,151.62,496.0,31
+,,Header away from Junction [In] (Case 3),Pl+Pb+Q < 3(k)Smavg ,97.77,496.0,20
+,,Header away from Junction [Out] (Case 3),Pl+Pb+Q < 3(k)Smavg ,89.63,496.0,18
+,,Header away from Junction [In] (Case 4),Pl+Pb+Q < 3(k)Smavg ,97.94,496.0,20
+,,Header away from Junction [Out] (Case 4),Pl+Pb+Q < 3(k)Smavg ,89.41,496.0,18
+,,Branch Next to Header Weld [In] (Case 3),Pl+Pb+Q < 3(k)Smavg ,206.75,496.0,42
+,,Branch Next to Header Weld [Out] (Case 3),Pl+Pb+Q < 3(k)Smavg ,171.72,496.0,35
+,,Branch Next to Header Weld [In] (Case 4),Pl+Pb+Q < 3(k)Smavg ,206.21,496.0,42
+,,Branch Next to Header Weld [Out] (Case 4),Pl+Pb+Q < 3(k)Smavg ,171.27,496.0,35
+,,Branch Transition [In] (Case 3),Pl+Pb+Q < 3(k)Smavg ,60.05,496.0,12
+,,Branch Transition [Out] (Case 3),Pl+Pb+Q < 3(k)Smavg ,51.55,496.0,10
+,,Branch Transition [In] (Case 4),Pl+Pb+Q < 3(k)Smavg ,59.96,496.0,12
+,,Branch Transition [Out] (Case 4),Pl+Pb+Q < 3(k)Smavg ,51.59,496.0,10
+,,Header Next to Nozzle Weld [In] (Case 4),Pl+Pb+Q+F < Sa,125.18,289.98,43
+,,Header away from Junction [In] (Case 4),Pl+Pb+Q+F < Sa,48.97,289.98,17
+,,Branch Next to Header Weld [In] (Case 4),Pl+Pb+Q+F < Sa,139.19,289.98,48
+,,Branch Transition [In] (Case 4),Pl+Pb+Q+F < Sa,29.98,289.98,10
+,,,,,,
+"Cylinder-Nozzle  3400mm (30 thk) x 300mm (11,3 thk)  ",,Header Next to Nozzle Weld [Mean] (Case 2),Pl+Pb < 1.5(k)Smh [Pb=0],162.66,206.84,79
+,,Header Next to Nozzle Weld [Bending] (Case 2),Qb < (3.0)Smavg,50.77,496.0,10
+,,Header Next to Nozzle Weld [Min. Principal] (Case 2),S1+S2+S3<4S (SUS),201.99,551.58,37
+,,Header away from Junction [Mean] (Case 2),Pl+Pb < 1.5(k)Smh [Pb=0],93.97,206.84,45
+,,Header away from Junction [Bending] (Case 2),Qb < (3.0)Smavg,23.14,496.0,5
+,,Header away from Junction [Min. Principal] (Case 2),S1+S2+S3<4S (SUS),151.72,551.58,28
+,,Branch Next to Header Weld [Mean] (Case 2),Pl+Pb < 1.5(k)Smh [Pb=0],149.94,206.84,72
+,,Branch Next to Header Weld [Bending] (Case 2),Qb < (3.0)Smavg,124.83,496.0,25
+,,Branch Next to Header Weld [Min. Principal] (Case 2),S1+S2+S3<4S (SUS),180.31,551.58,33
+,,Branch Transition [Mean] (Case 2),Pl+Pb < 1.5(k)Smh [Pb=0],32.67,206.84,16
+,,Branch Transition [Bending] (Case 2),Qb < (3.0)Smavg,34.24,496.0,7
+,,Branch Transition [Min. Principal] (Case 2),S1+S2+S3<4S (SUS),55.87,551.58,10
+,,Header Next to Nozzle Weld [In] (Case 3),Pl+Pb+Q < 3(k)Smavg ,185.42,496.0,37
+,,Header Next to Nozzle Weld [Out] (Case 3),Pl+Pb+Q < 3(k)Smavg ,151.89,496.0,31
+,,Header Next to Nozzle Weld [In] (Case 4),Pl+Pb+Q < 3(k)Smavg ,185.74,496.0,37
+,,Header Next to Nozzle Weld [Out] (Case 4),Pl+Pb+Q < 3(k)Smavg ,149.2,496.0,30
+,,Header away from Junction [In] (Case 3),Pl+Pb+Q < 3(k)Smavg ,97.77,496.0,20
+,,Header away from Junction [Out] (Case 3),Pl+Pb+Q < 3(k)Smavg ,89.63,496.0,18
+,,Header away from Junction [In] (Case 4),Pl+Pb+Q < 3(k)Smavg ,99.42,496.0,20
+,,Header away from Junction [Out] (Case 4),Pl+Pb+Q < 3(k)Smavg ,87.46,496.0,18
+,,Branch Next to Header Weld [In] (Case 3),Pl+Pb+Q < 3(k)Smavg ,206.75,496.0,42
+,,Branch Next to Header Weld [Out] (Case 3),Pl+Pb+Q < 3(k)Smavg ,171.72,496.0,35
+,,Branch Next to Header Weld [In] (Case 4),Pl+Pb+Q < 3(k)Smavg ,201.35,496.0,41
+,,Branch Next to Header Weld [Out] (Case 4),Pl+Pb+Q < 3(k)Smavg ,167.16,496.0,34
+,,Branch Transition [In] (Case 3),Pl+Pb+Q < 3(k)Smavg ,60.05,496.0,12
+,,Branch Transition [Out] (Case 3),Pl+Pb+Q < 3(k)Smavg ,51.55,496.0,10
+,,Branch Transition [In] (Case 4),Pl+Pb+Q < 3(k)Smavg ,59.18,496.0,12
+,,Branch Transition [Out] (Case 4),Pl+Pb+Q < 3(k)Smavg ,51.95,496.0,10
+,,Header Next to Nozzle Weld [In] (Case 4),Pl+Pb+Q+F < Sa,125.38,289.98,43
+,,Header away from Junction [In] (Case 4),Pl+Pb+Q+F < Sa,49.71,289.98,17
+,,Branch Next to Header Weld [In] (Case 4),Pl+Pb+Q+F < Sa,135.91,289.98,47
+,,Branch Transition [In] (Case 4),Pl+Pb+Q+F < Sa,29.59,289.98,10
+,,,,,,
+"Cylinder-Nozzle  3400mm (40 thk) x 300mm (11,3 thk)  ",,Header Next to Nozzle Weld [Mean] (Case 2),Pl+Pb < 1.5(k)Smh [Pb=0],119.14,206.84,58
+,,Header Next to Nozzle Weld [Bending] (Case 2),Qb < (3.0)Smavg,30.82,496.0,6
+,,Header Next to Nozzle Weld [Min. Principal] (Case 2),S1+S2+S3<4S (SUS),148.21,551.58,27
+,,Header away from Junction [Mean] (Case 2),Pl+Pb < 1.5(k)Smh [Pb=0],62.91,206.84,30
+,,Header away from Junction [Bending] (Case 2),Qb < (3.0)Smavg,14.76,496.0,3
+,,Header away from Junction [Min. Principal] (Case 2),S1+S2+S3<4S (SUS),104.41,551.58,19
+,,Branch Next to Header Weld [Mean] (Case 2),Pl+Pb < 1.5(k)Smh [Pb=0],103.74,206.84,50
+,,Branch Next to Header Weld [Bending] (Case 2),Qb < (3.0)Smavg,81.67,496.0,16
+,,Branch Next to Header Weld [Min. Principal] (Case 2),S1+S2+S3<4S (SUS),133.2,551.58,24
+,,Branch Transition [Mean] (Case 2),Pl+Pb < 1.5(k)Smh [Pb=0],26.32,206.84,13
+,,Branch Transition [Bending] (Case 2),Qb < (3.0)Smavg,29.03,496.0,6
+,,Branch Transition [Min. Principal] (Case 2),S1+S2+S3<4S (SUS),47.38,551.58,9
+,,Header Next to Nozzle Weld [In] (Case 3),Pl+Pb+Q < 3(k)Smavg ,136.75,496.0,28
+,,Header Next to Nozzle Weld [Out] (Case 3),Pl+Pb+Q < 3(k)Smavg ,107.2,496.0,22
+,,Header Next to Nozzle Weld [In] (Case 4),Pl+Pb+Q < 3(k)Smavg ,137.12,496.0,28
+,,Header Next to Nozzle Weld [Out] (Case 4),Pl+Pb+Q < 3(k)Smavg ,106.14,496.0,21
+,,Header away from Junction [In] (Case 3),Pl+Pb+Q < 3(k)Smavg ,66.98,496.0,14
+,,Header away from Junction [Out] (Case 3),Pl+Pb+Q < 3(k)Smavg ,59.04,496.0,12
+,,Header away from Junction [In] (Case 4),Pl+Pb+Q < 3(k)Smavg ,67.51,496.0,14
+,,Header away from Junction [Out] (Case 4),Pl+Pb+Q < 3(k)Smavg ,58.51,496.0,12
+,,Branch Next to Header Weld [In] (Case 3),Pl+Pb+Q < 3(k)Smavg ,139.03,496.0,28
+,,Branch Next to Header Weld [Out] (Case 3),Pl+Pb+Q < 3(k)Smavg ,120.45,496.0,24
+,,Branch Next to Header Weld [In] (Case 4),Pl+Pb+Q < 3(k)Smavg ,136.99,496.0,28
+,,Branch Next to Header Weld [Out] (Case 4),Pl+Pb+Q < 3(k)Smavg ,118.6,496.0,24
+,,Branch Transition [In] (Case 3),Pl+Pb+Q < 3(k)Smavg ,44.35,496.0,9
+,,Branch Transition [Out] (Case 3),Pl+Pb+Q < 3(k)Smavg ,39.57,496.0,8
+,,Branch Transition [In] (Case 4),Pl+Pb+Q < 3(k)Smavg ,43.97,496.0,9
+,,Branch Transition [Out] (Case 4),Pl+Pb+Q < 3(k)Smavg ,39.81,496.0,8
+,,Header Next to Nozzle Weld [In] (Case 4),Pl+Pb+Q+F < Sa,92.56,289.98,32
+,,Header away from Junction [In] (Case 4),Pl+Pb+Q+F < Sa,33.76,289.98,12
+,,Branch Next to Header Weld [In] (Case 4),Pl+Pb+Q+F < Sa,92.47,289.98,32
+,,Branch Transition [In] (Case 4),Pl+Pb+Q+F < Sa,21.98,289.98,8
+,,,,,,
+"Cylinder-Nozzle  3400mm (30 thk) x 300mm (11,3 thk)  ",,Header Next to Nozzle Weld [Mean] (Case 2),Pl+Pb < 1.5(k)Smh [Pb=0],300.18,206.84,145
+,,Header Next to Nozzle Weld [Bending] (Case 2),Qb < (3.0)Smavg,93.25,496.0,19
+,,Header Next to Nozzle Weld [Min. Principal] (Case 2),S1+S2+S3<4S (SUS),372.42,551.58,68
+,,Header away from Junction [Mean] (Case 2),Pl+Pb < 1.5(k)Smh [Pb=0],173.65,206.84,84
+,,Header away from Junction [Bending] (Case 2),Qb < (3.0)Smavg,41.32,496.0,8
+,,Header away from Junction [Min. Principal] (Case 2),S1+S2+S3<4S (SUS),279.84,551.58,51
+,,Branch Next to Header Weld [Mean] (Case 2),Pl+Pb < 1.5(k)Smh [Pb=0],275.32,206.84,133
+,,Branch Next to Header Weld [Bending] (Case 2),Qb < (3.0)Smavg,224.97,496.0,45
+,,Branch Next to Header Weld [Min. Principal] (Case 2),S1+S2+S3<4S (SUS),331.7,551.58,60
+,,Branch Transition [Mean] (Case 2),Pl+Pb < 1.5(k)Smh [Pb=0],60.05,206.84,29
+,,Branch Transition [Bending] (Case 2),Qb < (3.0)Smavg,63.33,496.0,13
+,,Branch Transition [Min. Principal] (Case 2),S1+S2+S3<4S (SUS),102.92,551.58,19
+,,Header Next to Nozzle Weld [In] (Case 3),Pl+Pb+Q < 3(k)Smavg ,343.36,496.0,69
+,,Header Next to Nozzle Weld [Out] (Case 3),Pl+Pb+Q < 3(k)Smavg ,281.27,496.0,57
+,,Header Next to Nozzle Weld [In] (Case 4),Pl+Pb+Q < 3(k)Smavg ,343.6,496.0,69
+,,Header Next to Nozzle Weld [Out] (Case 4),Pl+Pb+Q < 3(k)Smavg ,279.34,496.0,56
+,,Header away from Junction [In] (Case 3),Pl+Pb+Q < 3(k)Smavg ,181.06,496.0,37
+,,Header away from Junction [Out] (Case 3),Pl+Pb+Q < 3(k)Smavg ,165.97,496.0,33
+,,Header away from Junction [In] (Case 4),Pl+Pb+Q < 3(k)Smavg ,182.22,496.0,37
+,,Header away from Junction [Out] (Case 4),Pl+Pb+Q < 3(k)Smavg ,164.41,496.0,33
+,,Branch Next to Header Weld [In] (Case 3),Pl+Pb+Q < 3(k)Smavg ,382.88,496.0,77
+,,Branch Next to Header Weld [Out] (Case 3),Pl+Pb+Q < 3(k)Smavg ,318.01,496.0,64
+,,Branch Next to Header Weld [In] (Case 4),Pl+Pb+Q < 3(k)Smavg ,378.99,496.0,76
+,,Branch Next to Header Weld [Out] (Case 4),Pl+Pb+Q < 3(k)Smavg ,314.73,496.0,63
+,,Branch Transition [In] (Case 3),Pl+Pb+Q < 3(k)Smavg ,111.21,496.0,22
+,,Branch Transition [Out] (Case 3),Pl+Pb+Q < 3(k)Smavg ,95.46,496.0,19
+,,Branch Transition [In] (Case 4),Pl+Pb+Q < 3(k)Smavg ,110.58,496.0,22
+,,Branch Transition [Out] (Case 4),Pl+Pb+Q < 3(k)Smavg ,95.75,496.0,19
+,,Header Next to Nozzle Weld [In] (Case 4),Pl+Pb+Q+F < Sa,231.93,289.98,80
+,,Header away from Junction [In] (Case 4),Pl+Pb+Q+F < Sa,91.11,289.98,31
+,,Branch Next to Header Weld [In] (Case 4),Pl+Pb+Q+F < Sa,255.82,289.98,88
+,,Branch Transition [In] (Case 4),Pl+Pb+Q+F < Sa,55.29,289.98,19
+"Cylinder-Nozzle  3400mm (30 thk) x 300mm (11,3 thk)  ",,,,,,

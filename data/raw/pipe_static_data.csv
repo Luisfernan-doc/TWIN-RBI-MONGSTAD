@@ -1,0 +1,13 @@
+line_id,service,fluid,material,nominal_diameter_in,schedule,nominal_thickness_mm,tmin_mm,design_pressure_bar,design_temp_c,operating_pressure_bar,operating_temp_c,fluid_phase,insulated,h2s_content_ppm,sulfur_pct_wt,install_year,last_inspection_year,fluid_category,consequence_area_m2,financial_impact_usd_per_day,cui_active,ssc_active,hic_active,sulfidation_active,fac_active,initial_risk_category,initial_risk_score,asset_type
+L-01,Feed cracker,Heavy naphtha,CS A106-B,8,Sch 40,8.18,4.0,25.0,320,18.0,280,Liquid,1,450,0.86,2005,2015,C3-C5,85,450000,1,1,1,1,0,High,16,pipe
+L-02,Pump recirculation,Light naphtha,CS A106-B,3,Sch 80,5.49,2.8,20.0,200,12.0,160,Liquid,1,380,0.86,2005,2016,C3-C5,32,180000,1,1,1,1,0,High,15,pipe
+L-03,Cracker effluent,H2S+HC gas,CS A333-6,6,Sch 40,7.11,3.5,35.0,280,25.0,220,Gas,1,1800,0.86,2005,2015,H2S,145,620000,1,1,1,1,0,High,18,pipe
+L-04,HP steam line,Steam 40bar,CS A106-B,4,Sch 80,6.02,3.0,50.0,400,40.0,350,Gas,1,0,0.0,2008,2017,Steam,28,95000,1,0,0,0,1,Medium,8,pipe
+L-05,Atm. diesel,Gas oil,CS A106-B,6,Sch 40,7.11,3.5,15.0,230,8.0,180,Liquid,1,120,0.3,2005,2016,C6-C8,55,210000,1,0,0,1,0,Medium,9,pipe
+L-06,Condensate return,Condensate,CS A106-B,3,Sch 80,5.49,2.8,12.0,160,6.0,120,Liquid,1,0,0.0,2010,2018,Water,12,65000,1,0,0,0,1,Medium,6,pipe
+L-07,Product cooling,HC+water,CS A106-B,4,Sch 40,6.02,3.0,10.0,120,5.0,90,Mixed,0,80,0.2,2005,2017,C6-C8,25,120000,0,0,0,1,0,Low,4,pipe
+L-08,LPG overhead,Propane/Butane,CS A333-6,4,Sch 80,6.02,3.0,20.0,80,14.0,50,Gas,1,200,0.5,2008,2016,C3-C5,48,175000,1,1,0,0,0,Low,5,pipe
+L-09,Firewater,Seawater,CS A53-B,6,Sch 40,7.11,3.5,15.0,40,10.0,15,Liquid,0,0,0.0,1995,2014,Water,8,30000,0,0,0,0,0,Low,3,pipe
+L-10,Pump min-flow,Light naphtha,CS A106-B,3,Sch 80,5.49,2.8,15.0,180,9.0,145,Liquid,1,380,0.86,2005,2014,C3-C5,32,180000,1,1,1,1,0,Critical,20,pipe
+V-101,Reflux Drum — Cracker overhead,LPG + H2S vapor,CS A516-70,60,N/A — vessel,22.0,8.5,28.0,120,16.5,65,Gas/Liquid,1,1200,0.86,2005,2015,H2S,380,820000,1,1,1,0,0,High,15,vessel
+E-101,Overhead Condenser — Cracker,HC vapor / cooling water,CS A516-70 / SS 316L tubes,24,N/A — exchanger,12.0,5.0,22.0,180,14.0,90,Mixed,1,650,0.86,2005,2016,H2S,210,620000,1,1,1,1,0,High,14,exchanger
