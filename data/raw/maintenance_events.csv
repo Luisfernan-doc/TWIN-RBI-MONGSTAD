@@ -1,0 +1,18 @@
+date,end_date,line_id,event_type,description,duration_days,cost_usd,performed_by
+2018-04-01,2018-09-30,ALL,CRUDE_CHANGE,Incremento fracción Arab Heavy 25% → 35%,183,0,Operations
+2018-06-01,2018-06-01,ALL,CALIBRATION,Calibración anual analizadores H2S — todos los trenes,1,8500,Instrumentation
+2018-09-10,2018-09-12,V-101,PREVENTIVE,Inspección interna visual + limpieza — apertura manhole,2,35000,Inspection
+2019-03-05,2019-03-06,L-03,PREVENTIVE,Verificación aislamiento — zona CUI sospechosa,1,12000,Maintenance
+2019-06-03,2019-06-03,ALL,CALIBRATION,Calibración anual analizadores H2S,1,8500,Instrumentation
+2019-08-14,2019-08-16,L-10,CORRECTIVE,Reemplazo sección tubería — adelgazamiento detectado en UT,2,45000,Maintenance
+2020-04-15,2020-05-31,ALL,TURNAROUND,Parada mayor programada — inspección general planta,46,2800000,Equinor + Contractor
+2020-04-20,2020-05-10,V-101,TURNAROUND,Inspección completa durante turnaround — TOFD + UT grid,20,180000,Equinor + TÜV
+2021-01-01,2021-06-30,ALL,PROCESS_CHANGE,Operación a temperatura elevada +15°C sobre nominal,181,0,Operations
+2021-06-07,2021-06-07,ALL,CALIBRATION,Calibración anual analizadores H2S + termopares,1,12000,Instrumentation
+2021-07-01,2021-12-31,ALL,CRUDE_CHANGE,Cambio temporal crudo ligero — mezcla 85/15,184,0,Operations
+2021-11-22,2021-11-24,L-10,CORRECTIVE,Aplicación recubrimiento interno — zona corrosión activa,2,28000,Maintenance
+2022-01-01,2022-12-31,ALL,CRUDE_CHANGE,Retorno mezcla normal + incremento presión +10%,365,0,Operations
+2022-05-18,2022-05-20,L-03,CORRECTIVE,Reemplazo segmento 2m — espesor bajo t_min,2,52000,Maintenance
+2022-06-02,2022-06-02,ALL,CALIBRATION,Calibración anual instrumentación,1,9000,Instrumentation
+2022-09-15,2022-09-15,L-10,INSPECTION_UNPLANNED,Inspección no programada — vibración anómala detectada en SCADA,1,18000,Inspection
+2022-11-08,2022-11-10,L-10,CORRECTIVE,Refuerzo weld overlay — zona degradación acelerada confirmada,2,67000,Maintenance

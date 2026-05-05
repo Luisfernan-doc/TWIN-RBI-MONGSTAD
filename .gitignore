@@ -1,1 +1,23 @@
- 
+ # Modelos grandes
+models/*.keras
+models/*.pt
+*.h5
+
+# Solo excluir datos realmente sensibles
+data/raw/*.key
+data/raw/*.secret
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+*.egg-info/
+
+# Entorno
+.env
+conda-env.yml
+
+# OS
+.DS_Store
+Thumbs.db
+
