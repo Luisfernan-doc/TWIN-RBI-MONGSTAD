@@ -182,6 +182,112 @@ for i, (nombre, estado, detalle, color) in enumerate(modulos):
         </div>
         """, unsafe_allow_html=True)
 
+# ── Explorador de activo ──────────────────────────────────
+st.subheader("🔍 Explorador de Activo — Condiciones Operacionales")
+
+if data_ok:
+    activo_sel = st.selectbox(
+        "Selecciona un activo:",
+        options=sorted(df_scada['line_id'].unique()),
+        index=list(sorted(df_scada['line_id'].unique())).index('L-10')
+    )
+
+    df_act = df_scada[df_scada['line_id'] == activo_sel].copy()
+    df_act = df_act[df_act['sensor_status'].isin([0, 1])]
+
+    # Info del activo
+    last_rbi = df_rbi[df_rbi['line_id'] == activo_sel].sort_values(
+        ['year','quarter']).iloc[-1]
+
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric("PoF Categoría",
+                f"{int(last_rbi['pof_category'])}",
+                last_rbi['risk_label'])
+    col2.metric("RUL",
+                f"{last_rbi['RUL_years']:.1f} años")
+    col3.metric("H2S medio",
+                f"{last_rbi['h2s_mean']:.0f} ppm")
+    col4.metric("CR media",
+                f"{last_rbi['cr_mean']:.3f} mm/yr")
+
+    st.markdown("---")
+
+    # Gráficos de tendencia
+    col_a, col_b = st.columns(2)
+
+    with col_a:
+        # Presión y temperatura
+        fig_pt = go.Figure()
+        df_monthly = df_act.resample('ME', on='date').mean(numeric_only=True).reset_index()
+
+        fig_pt.add_trace(go.Scatter(
+            x=df_monthly['date'], y=df_monthly['pressure_inlet_bar'],
+            name='Presión inlet (bar)', line=dict(color='#185FA5', width=2)
+        ))
+        fig_pt.add_trace(go.Scatter(
+            x=df_monthly['date'], y=df_monthly['temp_process_c'],
+            name='Temperatura proceso (°C)', line=dict(color='#D85A30', width=2),
+            yaxis='y2'
+        ))
+        fig_pt.update_layout(
+            title=f'{activo_sel} — Presión y Temperatura',
+            height=300,
+            plot_bgcolor='#F8F8F8',
+            yaxis=dict(title='Presión (bar)', color='#185FA5'),
+            yaxis2=dict(title='Temperatura (°C)', color='#D85A30',
+                       overlaying='y', side='right'),
+            legend=dict(orientation='h', y=-0.2),
+            margin=dict(t=40, b=40)
+        )
+        st.plotly_chart(fig_pt, use_container_width=True)
+
+    with col_b:
+        # H2S y vibración
+        fig_hv = go.Figure()
+        fig_hv.add_trace(go.Scatter(
+            x=df_monthly['date'],
+            y=df_monthly[['h2s_ppm_an1','h2s_ppm_an2']].mean(axis=1),
+            name='H2S medio (ppm)', line=dict(color='#A32D2D', width=2)
+        ))
+        fig_hv.add_trace(go.Scatter(
+            x=df_monthly['date'], y=df_monthly['vibration_mm_s'],
+            name='Vibración (mm/s)', line=dict(color='#534AB7', width=2),
+            yaxis='y2'
+        ))
+        fig_hv.update_layout(
+            title=f'{activo_sel} — H2S y Vibración',
+            height=300,
+            plot_bgcolor='#F8F8F8',
+            yaxis=dict(title='H2S (ppm)', color='#A32D2D'),
+            yaxis2=dict(title='Vibración (mm/s)', color='#534AB7',
+                       overlaying='y', side='right'),
+            legend=dict(orientation='h', y=-0.2),
+            margin=dict(t=40, b=40)
+        )
+        st.plotly_chart(fig_hv, use_container_width=True)
+
+    # Delta T dew
+    fig_dew = go.Figure()
+    fig_dew.add_trace(go.Scatter(
+        x=df_monthly['date'], y=df_monthly['delta_T_dew'],
+        name='Delta T dew (°C)',
+        line=dict(color='#1D9E75', width=2),
+        fill='tozeroy', fillcolor='rgba(29,158,117,0.1)'
+    ))
+    fig_dew.add_hline(y=0, line_dash='dash', line_color='#A32D2D',
+                      annotation_text='Punto de rocío — riesgo CUI')
+    fig_dew.add_hline(y=5, line_dash='dot', line_color='#BA7517',
+                      annotation_text='Zona de riesgo (<5°C)')
+    fig_dew.update_layout(
+        title=f'{activo_sel} — Delta T dew (T_pared - T_rocío)',
+        height=280, plot_bgcolor='#F8F8F8',
+        yaxis=dict(title='°C'),
+        margin=dict(t=40, b=20)
+    )
+    st.plotly_chart(fig_dew, use_container_width=True)
+
+
+
 st.divider()
 st.caption("TWIN-RBI Mongstad · Luis Fernando Carvallo · "
            "Senior Mechanical Integrity & Digital Twin Expert · "
