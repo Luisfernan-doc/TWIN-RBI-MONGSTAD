@@ -1,0 +1,32 @@
+{
+  "model": "XGBoost RUL Regressor",
+  "dataset": "..\\data\\processed\\features_ml_final.csv",
+  "n_samples": 228,
+  "n_features": 52,
+  "train_size": 182,
+  "test_size": 46,
+  "baseline": {
+    "MAE": 0.2194,
+    "RMSE": 0.377,
+    "R2": 0.9996,
+    "MAPE": 6.48
+  },
+  "optimized": {
+    "MAE": 0.2365,
+    "RMSE": 0.3842,
+    "R2": 0.9995,
+    "MAPE": 52.87,
+    "optuna_trials": 60,
+    "best_params": {
+      "n_estimators": 787,
+      "max_depth": 3,
+      "learning_rate": 0.05534441697902391,
+      "subsample": 0.942160799851946,
+      "colsample_bytree": 0.9570531095226537,
+      "min_child_weight": 1,
+      "gamma": 0.22682723139585698,
+      "reg_alpha": 0.42448751342111435,
+      "reg_lambda": 1.0376109928428165e-06
+    }
+  }
+}
