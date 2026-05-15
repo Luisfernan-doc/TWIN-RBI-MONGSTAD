@@ -493,6 +493,116 @@ if ffs_ok:
                    "El PFI no captura fractura fragil. "
                    "Requiere WFMT/RT y evaluacion NACE MR0175.")
         
+# ── LSTM Anomaly Detection ────────────────────────────────
+st.divider()
+st.subheader("🔍 LSTM Anomaly Detection — Detección de Anomalías SCADA")
+st.caption("Red neuronal LSTM Autoencoder entrenada con 4 años de operación normal (2018-2021). "
+           "Detecta desviaciones anómalas en 2022 por activo.")
+
+@st.cache_data
+def load_lstm_errors():
+    return pd.read_csv("data/processed/lstm_reconstruction_errors.csv",
+                       parse_dates=['date'])
+
+try:
+    df_errors = load_lstm_errors()
+    lstm_ok   = True
+except Exception as e:
+    st.error(f"Error cargando LSTM errors: {e}")
+    lstm_ok = False
+
+if lstm_ok:
+
+    # ── Resumen por activo ────────────────────────────────
+    summary = df_errors.groupby('line_id').agg(
+        total    = ('is_anomaly', 'count'),
+        anomalias= ('is_anomaly', 'sum'),
+        threshold= ('threshold', 'first')
+    ).reset_index()
+    summary['rate'] = (summary['anomalias'] / summary['total'] * 100).round(1)
+    summary = summary.sort_values('anomalias', ascending=False)
+
+    st.markdown("##### Anomalías detectadas por activo — Test 2022")
+
+    cols_hdr = st.columns([1, 1, 2, 1, 1])
+    cols_hdr[0].markdown("**Activo**")
+    cols_hdr[1].markdown("**Anomalías**")
+    cols_hdr[2].markdown("**Tasa**")
+    cols_hdr[3].markdown("**Umbral**")
+    cols_hdr[4].markdown("**Alerta**")
+
+    for _, row in summary.iterrows():
+        c0,c1,c2,c3,c4 = st.columns([1,1,2,1,1])
+        rate    = row['rate']
+        color   = '#A32D2D' if rate>30 else '#D85A30' if rate>15 \
+                  else '#BA7517' if rate>5 else '#1D9E75'
+        icon    = '🔴' if rate>30 else '🟠' if rate>15 \
+                  else '🟡' if rate>5 else '🟢'
+        bar_w   = min(rate, 100)
+        bar_html = f"""
+        <div style='background:#F0F0F0;border-radius:4px;height:16px;width:100%'>
+        <div style='background:{color};width:{bar_w}%;height:16px;
+                    border-radius:4px'></div></div>
+        <span style='font-size:11px;color:{color}'>{rate}%</span>"""
+        c0.markdown(f"**{row['line_id']}**")
+        c1.markdown(f"{int(row['anomalias'])} / {int(row['total'])}")
+        c2.markdown(bar_html, unsafe_allow_html=True)
+        c3.markdown(f"{row['threshold']:.3f}")
+        c4.markdown(f"{icon} {'CRÍTICO' if rate>30 else 'ALTO' if rate>15 else 'MEDIO' if rate>5 else 'NORMAL'}")
+
+    st.markdown("---")
+
+    # ── Detalle por activo ────────────────────────────────
+    st.markdown("##### Error de reconstrucción — Serie temporal 2022")
+
+    activo_lstm = st.selectbox(
+        "Selecciona activo:",
+        options=summary['line_id'].tolist(),
+        key='lstm_selector'
+    )
+
+    df_act    = df_errors[df_errors['line_id'] == activo_lstm].copy()
+    threshold = df_act['threshold'].iloc[0]
+    n_anom    = df_act['is_anomaly'].sum()
+    rate_act  = n_anom / len(df_act) * 100
+
+    fig_lstm = go.Figure()
+    fig_lstm.add_trace(go.Scatter(
+        x=df_act['date'], y=df_act['recon_error'],
+        name='Error reconstrucción',
+        line=dict(color='#D85A30', width=1.5),
+        fill='tozeroy',
+        fillcolor='rgba(216,90,48,0.1)'
+    ))
+    fig_lstm.add_hline(
+        y=threshold, line_dash='dash', line_color='#A32D2D',
+        annotation_text=f'Umbral = {threshold:.3f}',
+        annotation_position='top right'
+    )
+    # Marcar anomalías
+    df_anom = df_act[df_act['is_anomaly'] == 1]
+    if len(df_anom) > 0:
+        fig_lstm.add_trace(go.Scatter(
+            x=df_anom['date'], y=df_anom['recon_error'],
+            mode='markers', name='Anomalía',
+            marker=dict(color='#A32D2D', size=6, symbol='x')
+        ))
+    fig_lstm.update_layout(
+        title=f'{activo_lstm} — Error LSTM 2022 | {n_anom} anomalías ({rate_act:.1f}%)',
+        height=320, plot_bgcolor='#F8F8F8',
+        xaxis=dict(title='Fecha'),
+        yaxis=dict(title='MSE reconstrucción'),
+        legend=dict(orientation='h', y=-0.2),
+        margin=dict(t=40, b=40)
+    )
+    st.plotly_chart(fig_lstm, use_container_width=True)
+
+    st.info("📊 **Metodología:** LSTM Autoencoder (64→32→64) · "
+            "Entrenado 2018-2021 (operación normal) · "
+            "Umbral = percentil 95 del error en entrenamiento · "
+            "Anomalía = error > umbral individual por activo")
+
+        
         # ── Living RBI Bayesiano ──────────────────────────────────
 st.divider()
 st.subheader("🧮 Living RBI Bayesiano — Intervalos de Inspección Dinámicos")
