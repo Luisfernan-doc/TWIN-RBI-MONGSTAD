@@ -286,6 +286,329 @@ if data_ok:
     )
     st.plotly_chart(fig_dew, use_container_width=True)
 
+# ── FFS Assessment — API 579 Level 1 ─────────────────────
+st.divider()
+st.subheader("🔩 FFS Assessment — API 579-1/ASME FFS-1 Level 1")
+
+@st.cache_resource
+def load_ffs_engine():
+    import sys
+    sys.path.append('.')
+    from src.ffs_engine import FFSEngine
+    return FFSEngine(
+        static_data_path='data/raw/pipe_static_data.csv',
+        rbi_labels_path='data/processed/rbi_labels.csv'
+    )
+
+try:
+    engine = load_ffs_engine()
+    ffs_ok = True
+except Exception as e:
+    st.error(f"Error cargando FFS engine: {e}")
+    ffs_ok = False
+
+if ffs_ok:
+
+    # ── PFI Flota completa ────────────────────────────────
+    df_pfi = engine.pfi_all()
+
+    st.markdown("##### Proximity to Failure Index — Flota completa")
+    st.caption("PFI = % del camino recorrido hacia la falla Level 1. "
+               "Dominante = mecanismo más crítico. "
+               "⚠️ PFI no captura SSC/HIC — ver detalle por activo.")
+
+    # Barra de progreso por activo
+    cols_pfi = st.columns([1, 1, 3, 1, 1, 1.5])
+    cols_pfi[0].markdown("**Activo**")
+    cols_pfi[1].markdown("**PFI**")
+    cols_pfi[2].markdown("**Barra**")
+    cols_pfi[3].markdown("**Nivel**")
+    cols_pfi[4].markdown("**RUL**")
+    cols_pfi[5].markdown("**Dominante**")
+
+    COLOR_MAP = {
+        'FAIL':    '#A32D2D',
+        'CRÍTICO': '#D85A30',
+        'MONITOR': '#BA7517',
+        'SAFE':    '#1D9E75',
+    }
+
+    for _, row in df_pfi.iterrows():
+        c0,c1,c2,c3,c4,c5 = st.columns([1,1,3,1,1,1.5])
+        pfi_val  = min(row['PFI_final'], 100)
+        color    = COLOR_MAP.get(row['level'], '#888780')
+        bar_html = f"""
+        <div style='background:#F0F0F0;border-radius:4px;height:18px;width:100%'>
+        <div style='background:{color};width:{pfi_val}%;height:18px;
+                    border-radius:4px;text-align:right;padding-right:4px'>
+        <span style='font-size:10px;color:white;line-height:18px'>
+        {row['PFI_final']:.0f}%</span>
+        </div></div>"""
+        c0.markdown(f"**{row['tag']}**")
+        c1.markdown(f"{row['color']} {row['PFI_final']:.0f}%")
+        c2.markdown(bar_html, unsafe_allow_html=True)
+        c3.markdown(f"<span style='color:{color};font-weight:600'>"
+                    f"{row['level']}</span>", unsafe_allow_html=True)
+        c4.markdown(f"{row['RUL_years']:.1f} yr")
+        c5.markdown(f"<span style='font-size:11px'>{row['dominant']}</span>",
+                    unsafe_allow_html=True)
+
+    st.markdown("---")
+
+    # ── Detalle por activo ────────────────────────────────
+    st.markdown("##### Detalle FFS por activo")
+
+    activo_ffs = st.selectbox(
+        "Selecciona activo para evaluación FFS detallada:",
+        options=df_pfi['tag'].tolist(),
+        key='ffs_selector_detail'
+    )
+
+    r   = engine.assess(activo_ffs)
+    pfi = engine.calc_pfi(activo_ffs)
+
+    # Métricas superiores
+    m1,m2,m3,m4,m5 = st.columns(5)
+    status_color = COLOR_MAP.get(pfi['level'], '#888780')
+
+    m1.metric("FFS Status",    r.ffs_status)
+    m2.metric("PFI Final",     f"{pfi['PFI_final']:.1f}%")
+    m3.metric("t_actual",      f"{r.t_actual_mm:.2f} mm",
+              f"nominal: {r.t_nominal_mm} mm")
+    m4.metric("MAWP",          f"{r.MAWP_bar:.1f} bar",
+              f"P_oper: {r.P_oper_bar} bar")
+    m5.metric("Vida remanente",f"{r.remaining_life_yr:.1f} años")
+
+    # Mecanismos Level 1
+    col_mec, col_pfi_chart = st.columns([1, 1])
+
+    with col_mec:
+        st.markdown("**Mecanismos de daño Level 1**")
+        mecanismos = {
+            'GML — Metal Loss'   : r.gml_status,
+            'LML — Pitting'      : r.lml_status,
+            'SSC / HIC'          : r.ssc_status,
+            'Creep'              : r.creep_status,
+            'Fatiga térmica'     : r.fatigue_status,
+        }
+        for mec, status in mecanismos.items():
+            if 'FAIL' in status:
+                icon, color = '🔴', '#FCEBEB'
+            elif 'MONITOR' in status:
+                icon, color = '🟡', '#FAEEDA'
+            else:
+                icon, color = '🟢', '#E1F5EE'
+            st.markdown(f"""
+            <div style='background:{color};border-radius:6px;
+                        padding:8px 12px;margin-bottom:6px'>
+            <span style='font-weight:600'>{icon} {mec}</span><br>
+            <span style='font-size:12px;color:#555'>{status}</span>
+            </div>""", unsafe_allow_html=True)
+
+    with col_pfi_chart:
+        st.markdown("**PFI por dimensión**")
+        fig_pfi = go.Figure(go.Bar(
+            x=[pfi['PFI_thickness'], pfi['PFI_mawp'], pfi['PFI_rul']],
+            y=['Espesor', 'Presión (MAWP)', 'Vida útil'],
+            orientation='h',
+            marker_color=[
+                '#A32D2D' if v >= 100 else
+                '#D85A30' if v >= 75 else
+                '#BA7517' if v >= 50 else '#1D9E75'
+                for v in [pfi['PFI_thickness'],
+                          pfi['PFI_mawp'],
+                          pfi['PFI_rul']]
+            ],
+            text=[f"{v:.1f}%" for v in [pfi['PFI_thickness'],
+                                         pfi['PFI_mawp'],
+                                         pfi['PFI_rul']]],
+            textposition='outside',
+        ))
+        fig_pfi.add_vline(x=100, line_dash='dash',
+                          line_color='#A32D2D',
+                          annotation_text='Límite falla')
+        fig_pfi.add_vline(x=75, line_dash='dot',
+                          line_color='#D85A30',
+                          annotation_text='Crítico')
+        fig_pfi.update_layout(
+            height=260,
+            plot_bgcolor='#F8F8F8',
+            xaxis=dict(range=[0, 160], title='%'),
+            margin=dict(t=20, b=20, l=20, r=60),
+            showlegend=False
+        )
+        st.plotly_chart(fig_pfi, use_container_width=True)
+
+    # Acción requerida
+    action_color = COLOR_MAP.get(pfi['level'], '#888780')
+    st.markdown(f"""
+    <div style='background:{action_color}22;border-left:4px solid {action_color};
+                border-radius:4px;padding:12px;margin-top:8px'>
+    <span style='font-weight:600;color:{action_color}'>
+    Acción requerida — {activo_ffs}</span><br>
+    <span style='font-size:13px'>{r.action_required}</span><br>
+    <span style='font-size:12px;color:#555'>
+    Próxima inspección: {r.next_insp_months} meses</span>
+    </div>""", unsafe_allow_html=True)
+
+    # Nota SSC
+    if 'FAIL' in r.ssc_status:
+        st.warning(f"⚠️ **SSC/HIC activo** — {r.ssc_status}. "
+                   "El PFI no captura fractura frágil. "
+                   "Requiere WFMT/RT y evaluación NACE MR0175 independiente.")
+
+# ── FFS Assessment — API 579 Level 1 ─────────────────────
+st.divider()
+st.subheader("🔩 FFS Assessment — API 579-1/ASME FFS-1 Level 1")
+
+@st.cache_resource
+def load_ffs_engine():
+    import sys
+    sys.path.append('.')
+    from src.ffs_engine import FFSEngine
+    return FFSEngine(
+        static_data_path='data/raw/pipe_static_data.csv',
+        rbi_labels_path='data/processed/rbi_labels.csv'
+    )
+
+try:
+    engine  = load_ffs_engine()
+    df_pfi  = engine.pfi_all()
+    ffs_ok  = True
+except Exception as e:
+    st.error(f"Error cargando FFS engine: {e}")
+    ffs_ok = False
+
+if ffs_ok:
+
+    st.markdown("##### Proximity to Failure Index — Flota completa")
+    st.caption("PFI = % del camino recorrido hacia la falla Level 1.  "
+               "⚠️ SSC/HIC no se captura en PFI — ver detalle por activo.")
+
+    COLOR_MAP_FFS = {
+        'FAIL':    '#A32D2D',
+        'CRÍTICO': '#D85A30',
+        'MONITOR': '#BA7517',
+        'SAFE':    '#1D9E75',
+    }
+
+    # ── Tabla PFI con barras ──────────────────────────────
+    for _, row in df_pfi.iterrows():
+        c0,c1,c2,c3,c4,c5 = st.columns([0.8, 0.8, 3, 1, 0.8, 2])
+        pfi_val = min(row['PFI_final'], 100)
+        color   = COLOR_MAP_FFS.get(row['level'], '#888780')
+        bar_html = f"""
+        <div style='background:#F0F0F0;border-radius:4px;
+                    height:18px;width:100%'>
+        <div style='background:{color};width:{pfi_val}%;
+                    height:18px;border-radius:4px;
+                    text-align:right;padding-right:4px'>
+        <span style='font-size:10px;color:white;line-height:18px'>
+        {row['PFI_final']:.0f}%</span>
+        </div></div>"""
+        c0.markdown(f"**{row['tag']}**")
+        c1.markdown(f"{row['color']} {row['PFI_final']:.0f}%")
+        c2.markdown(bar_html, unsafe_allow_html=True)
+        c3.markdown(f"<span style='color:{color};font-weight:600'>"
+                    f"{row['level']}</span>",
+                    unsafe_allow_html=True)
+        c4.markdown(f"{row['RUL_years']:.1f} yr")
+        c5.markdown(f"<span style='font-size:11px'>"
+                    f"{row['dominant']}</span>",
+                    unsafe_allow_html=True)
+
+    st.markdown("---")
+
+    # ── Detalle por activo ────────────────────────────────
+    st.markdown("##### Detalle FFS por activo")
+
+    activo_ffs = st.selectbox(
+        "Selecciona activo para evaluación FFS detallada:",
+        options=df_pfi['tag'].tolist(),
+        key='ffs_selector'
+    )
+
+    r   = engine.assess(activo_ffs)
+    pfi = engine.calc_pfi(activo_ffs)
+    color_act = COLOR_MAP_FFS.get(pfi['level'], '#888780')
+
+    # Métricas
+    m1,m2,m3,m4,m5 = st.columns(5)
+    m1.metric("FFS Status",      r.ffs_status)
+    m2.metric("PFI Final",       f"{pfi['PFI_final']:.1f}%")
+    m3.metric("t_actual",        f"{r.t_actual_mm:.2f} mm",
+              f"nominal: {r.t_nominal_mm} mm")
+    m4.metric("MAWP",            f"{r.MAWP_bar:.1f} bar",
+              f"P_oper: {r.P_oper_bar} bar")
+    m5.metric("Vida remanente",  f"{r.remaining_life_yr:.1f} años")
+
+    col_mec, col_chart = st.columns([1, 1])
+
+    # Mecanismos
+    with col_mec:
+        st.markdown("**Mecanismos de daño Level 1**")
+        for mec, status in {
+            'GML — Metal Loss' : r.gml_status,
+            'LML — Pitting'    : r.lml_status,
+            'SSC / HIC'        : r.ssc_status,
+            'Creep'            : r.creep_status,
+            'Fatiga térmica'   : r.fatigue_status,
+        }.items():
+            if 'FAIL'    in status: icon, bg = '🔴', '#FCEBEB'
+            elif 'MONITOR' in status: icon, bg = '🟡', '#FAEEDA'
+            else:                   icon, bg = '🟢', '#E1F5EE'
+            st.markdown(f"""
+            <div style='background:{bg};border-radius:6px;
+                        padding:8px 12px;margin-bottom:6px'>
+            <b>{icon} {mec}</b><br>
+            <span style='font-size:12px;color:#555'>{status}</span>
+            </div>""", unsafe_allow_html=True)
+
+    # Gráfico PFI
+    with col_chart:
+        st.markdown("**PFI por dimensión**")
+        vals   = [pfi['PFI_thickness'], pfi['PFI_mawp'], pfi['PFI_rul']]
+        labels = ['Espesor', 'Presión (MAWP)', 'Vida útil']
+        colors = ['#A32D2D' if v>=100 else
+                  '#D85A30' if v>=75  else
+                  '#BA7517' if v>=50  else '#1D9E75'
+                  for v in vals]
+        fig_pfi = go.Figure(go.Bar(
+            x=vals, y=labels, orientation='h',
+            marker_color=colors,
+            text=[f"{v:.1f}%" for v in vals],
+            textposition='outside',
+        ))
+        fig_pfi.add_vline(x=100, line_dash='dash',
+                          line_color='#A32D2D',
+                          annotation_text='Límite falla')
+        fig_pfi.add_vline(x=75, line_dash='dot',
+                          line_color='#D85A30',
+                          annotation_text='Crítico')
+        fig_pfi.update_layout(
+            height=240, plot_bgcolor='#F8F8F8',
+            xaxis=dict(range=[0,160], title='%'),
+            margin=dict(t=10,b=10,l=10,r=60),
+            showlegend=False
+        )
+        st.plotly_chart(fig_pfi, use_container_width=True)
+
+    # Acción requerida
+    st.markdown(f"""
+    <div style='background:{color_act}22;
+                border-left:4px solid {color_act};
+                border-radius:4px;padding:12px;margin-top:8px'>
+    <b style='color:{color_act}'>Acción — {activo_ffs}</b><br>
+    <span style='font-size:13px'>{r.action_required}</span><br>
+    <span style='font-size:12px;color:#555'>
+    Próxima inspección: {r.next_insp_months} meses</span>
+    </div>""", unsafe_allow_html=True)
+
+    # Warning SSC
+    if 'FAIL' in r.ssc_status:
+        st.warning(f"⚠️ **SSC/HIC activo** — {r.ssc_status}. "
+                   "El PFI no captura fractura frágil. "
+                   "Requiere WFMT/RT y evaluación NACE MR0175.")
 
 
 st.divider()
