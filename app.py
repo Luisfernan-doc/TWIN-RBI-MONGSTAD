@@ -521,11 +521,10 @@ if lrbi_ok:
 
     # ── Métricas resumen ──────────────────────────────────
     c1,c2,c3,c4 = st.columns(4)
-    c1.metric("Activos evaluados",    f"{len(df_lrbi)}")
-    c2.metric("Inspección 3 meses",   f"{(df_lrbi['insp_interval_mo']==3).sum()} activos")
-    c3.metric("Inspección 6 meses",   f"{(df_lrbi['insp_interval_mo']==6).sum()} activos")
-    c4.metric("Inspección 12 meses",  f"{(df_lrbi['insp_interval_mo']==12).sum()} activos")
-
+    def activo_str(n): return f"{n} activo{'s' if n != 1 else ''}"
+    c2.metric("Inspección 3 meses",   activo_str((df_lrbi['insp_interval_mo']==3).sum()))
+    c3.metric("Inspección 6 meses",   activo_str((df_lrbi['insp_interval_mo']==6).sum()))
+    c4.metric("Inspección 12 meses",  activo_str((df_lrbi['insp_interval_mo']==12).sum()))
     st.markdown("---")
     col_tabla, col_chart = st.columns([1, 1])
 
@@ -555,7 +554,7 @@ if lrbi_ok:
     # ── Gráfico intervalos ────────────────────────────────
     with col_chart:
         st.markdown("**Intervalo de inspección óptimo por activo**")
-        df_sorted = df_lrbi.sort_values('insp_interval_mo')
+        df_sorted = df_lrbi.sort_values('insp_interval_mo', ascending=False)
         bar_colors = [
             '#A32D2D' if i<=3 else '#D85A30' if i<=6
             else '#BA7517' if i<=12 else '#1D9E75'
