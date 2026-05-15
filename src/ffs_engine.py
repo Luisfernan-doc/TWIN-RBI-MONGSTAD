@@ -67,24 +67,31 @@ class FFSEngine:
     # ── Carga activo ─────────────────────────────────────────
     def _load_asset(self, tag: str) -> dict:
         if tag not in self.df_static.index:
-            raise ValueError(f"Activo {tag} no encontrado en pipe_static_data.csv")
+            raise ValueError(f"Activo {tag} no encontrado")
         row = self.df_static.loc[tag].to_dict()
 
-        # CR más reciente desde rbi_labels (última ventana del activo)
-        rbi_row = self.df_rbi[self.df_rbi['line_id'] == tag].sort_values('window').iloc[-1]
-        row['cr_mean']  = rbi_row['cr_mean']
-        row['RUL_years']= rbi_row['RUL_years']
-        row['pof_cat']  = rbi_row['pof_category']
+    # CR y t_estimated desde última ventana del RBI
+        rbi_row = self.df_rbi[self.df_rbi['line_id'] == tag]\
+                  .sort_values('window').iloc[-1]
+        row['cr_mean']    = rbi_row['cr_mean']
+        row['RUL_years']  = rbi_row['RUL_years']
+        row['pof_cat']    = rbi_row['pof_category']
+        row['t_estimated'] = rbi_row['t_estimated']  # ← agregar esta línea
         return row
 
     # ── 1. Espesor actual estimado ────────────────────────────
     def _calc_thickness(self, a: dict, current_year: int = 2024) -> tuple:
         years_service    = current_year - int(a['install_year'])
         years_since_insp = current_year - int(a['last_inspection_year'])
-        t_loss   = a['cr_mean'] * years_service
-        t_actual = a['nominal_thickness_mm'] - t_loss
-        # Flag de pared agotada antes de clipear a 0
-        wall_exhausted = t_actual <= 0
+
+    # Usar t_estimated del RBI si está disponible — más confiable que CR×años
+        if 't_estimated' in a and a['t_estimated'] > 0:
+            t_actual = float(a['t_estimated'])
+        else:
+            t_loss   = a['cr_mean'] * years_since_insp
+            t_actual = a['nominal_thickness_mm'] - t_loss
+
+        wall_exhausted = t_actual <= a['tmin_mm']  # agotada si ya pasó t_min
         t_actual = max(t_actual, 0.0)
         return t_actual, years_service, years_since_insp, wall_exhausted
 
