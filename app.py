@@ -145,21 +145,111 @@ if data_ok:
 st.divider()
 
 # ── Estado del proyecto ───────────────────────────────────
-st.subheader("🗺️ Estado del Proyecto — Plan Maestro v4.0")
+# ── Texto introductorio ───────────────────────────────────
+st.divider()
+st.subheader("🏭 Sobre este proyecto")
+st.markdown("""
+<div style='background:#E6F1FB;border-left:4px solid #2E75B6;
+            border-radius:4px;padding:16px;margin-bottom:12px'>
+<p style='font-size:14px;color:#0D1B2A;margin:0'>
+<b>TWIN-RBI Mongstad</b> es un <b>Digital Twin de Integridad Mecánica</b> para la 
+refinería Equinor Mongstad (Noruega), que procesa crudo 75% Troll / 25% Arab Medium.
+El sistema combina <b>física de degradación</b>, <b>datos SCADA reales</b> e 
+<b>inteligencia artificial</b> para predecir cuándo y cómo fallarán los equipos 
+de proceso — antes de que ocurra.
+</p>
+<p style='font-size:13px;color:#555;margin:8px 0 0 0'>
+En vez de inspeccionar todos los equipos con la misma frecuencia (costoso e ineficiente),
+el sistema prioriza automáticamente los equipos más críticos y calcula el intervalo 
+de inspección óptimo para cada uno — reduciendo costos y aumentando la seguridad.
+</p>
+</div>
+""", unsafe_allow_html=True)
+
+# ── Estado del proyecto ───────────────────────────────────
+st.subheader("🗺️ Estado del Proyecto — Plan Maestro")
 
 modulos = [
-    ("EDA + Datasets",          "✅ Completado", "SCADA 5 años · DW Sim r=0.95 · 9 figuras",          "teal"),
-    ("Random Forest PoF",       "✅ Completado", "91.7% accuracy · F1-macro 88.7% · 5 categorías",    "teal"),
-    ("XGBoost RUL",             "✅ Completado", "R²=0.9995 · MAE=0.24 años",                         "teal"),
-    ("API 579 FFS Level 1",     "✅ Completado", "5 mecanismos · PFI flota completa · 12 activos",     "teal"),
-    ("LSTM Anomaly Detection",  "⏳ Pendiente",  "SCADA listo · anomaly_flag disponible",             "gray"),
-    ("Living RBI Bayesiano",    "⏳ Pendiente",  "Depende de XGBoost · PyMC 5.x",                     "gray"),
-    ("FFS Level 2 V-101",       "⏳ Pendiente",  "WRC-107/297 · boquilla F · ratio 2.13×",            "gray"),
-    ("Dashboard completo",      "🔄 En progreso","MVP desplegado · módulos en construcción",          "amber"),
+    (
+        "01 · EDA + Validación Física",
+        "✅ Completado",
+        "SCADA 5 años · DW Sim r=0.9527 · 9 figuras",
+        "teal",
+        "Análisis exploratorio de 21,912 registros SCADA diarios (2018-2022) de 12 activos. "
+        "Validación termodinámica con ecuación de estado Peng-Robinson (DW Sim) — correlación "
+        "r=0.9527 confirma que el dataset refleja la física real de la planta."
+    ),
+    (
+        "02 · Random Forest PoF",
+        "✅ Completado",
+        "Accuracy 91.7% · F1-macro 88.7% · 5 categorías",
+        "teal",
+        "Clasifica la Probabilidad de Fallo (PoF) de cada equipo en 5 categorías "
+        "(Very Low → Very High) según API 581. Entrenado con 228 observaciones × 44 features. "
+        "Recall del 99% en equipos Críticos — casi nunca falla al detectar un equipo en riesgo máximo."
+    ),
+    (
+        "03 · Validación DW Sim",
+        "✅ Completado",
+        "Peng-Robinson r=0.9527 · L-03 validado",
+        "teal",
+        "Validación de la cadena física H2S → Corrosión usando el simulador termodinámico "
+        "De Waard-Milliams con ecuación de estado Peng-Robinson. La correlación r=0.9527 "
+        "entre tasas calculadas y medidas en campo confirma la validez del modelo físico."
+    ),
+    (
+        "04 · XGBoost RUL",
+        "✅ Completado",
+        "R²=0.9995 · MAE=0.24 años · Optuna 60 trials",
+        "teal",
+        "Predice la Vida Útil Residual (RUL) de cada equipo en años — cuánto tiempo le queda "
+        "antes de necesitar intervención mayor. Error medio de solo 87 días. "
+        "Optimizado con búsqueda bayesiana (Optuna) sobre 9 hiperparámetros. "
+        "Incluye explicabilidad SHAP: muestra qué variables causan el deterioro de cada equipo."
+    ),
+    (
+        "05 · FFS API 579 Level 1",
+        "✅ Completado",
+        "5 mecanismos · PFI · 12 activos evaluados",
+        "teal",
+        "Evaluación Fitness-for-Service según norma API 579-1/ASME FFS-1 Level 1. "
+        "Evalúa 5 mecanismos de daño: pérdida de espesor, pitting, SSC/HIC (H2S), "
+        "creep y fatiga térmica. El PFI (Proximity to Failure Index) indica en % "
+        "qué tan cerca está cada equipo de su límite de falla."
+    ),
+    (
+        "06 · LSTM Anomaly Detection",
+        "✅ Completado",
+        "v3 por activo · L-10 42% anomalías · 469 total",
+        "teal",
+        "Red neuronal LSTM Autoencoder que aprende el comportamiento normal de cada equipo "
+        "y detecta desviaciones anómalas en los datos SCADA. Entrenado con 4 años de "
+        "operación normal (2018-2021), detecta anomalías en 2022. L-10 muestra 42% de "
+        "secuencias anómalas — confirma la degradación severa registrada en Q3 2022."
+    ),
+    (
+        "07 · Living RBI Bayesiano",
+        "✅ Completado",
+        "PyMC 5.x · 12 activos · intervalos 3-24 meses",
+        "teal",
+        "Actualiza dinámicamente la probabilidad de fallo combinando el modelo RF (prior) "
+        "con la tasa de corrosión observada en SCADA (likelihood) usando estadística bayesiana. "
+        "Produce intervalos de inspección óptimos por activo: desde 3 meses (críticos) "
+        "hasta 24 meses (seguros) — reemplazando los intervalos fijos del RBI estático."
+    ),
+    (
+        "FFS Level 2 · V-101",
+        "⏳ Pendiente",
+        "WRC-107/297 · boquilla F · ratio 2.13×",
+        "gray",
+        "Análisis de esfuerzos detallado en la boquilla F del V-101 (Reflux Drum) "
+        "según WRC-107/297. La boquilla opera a 2.13× el esfuerzo admisible — "
+        "requiere evaluación Level 2 con perfil de espesores por UT scanning."
+    ),
 ]
 
 cols = st.columns(3)
-for i, (nombre, estado, detalle, color) in enumerate(modulos):
+for i, (nombre, estado, detalle, color, tooltip) in enumerate(modulos):
     color_map = {
         'teal':  ('#E1F5EE','#0F6E56'),
         'amber': ('#FAEEDA','#854F0B'),
@@ -169,18 +259,14 @@ for i, (nombre, estado, detalle, color) in enumerate(modulos):
     }
     bg, fg = color_map.get(color, color_map['gray'])
     with cols[i % 3]:
-        st.markdown(f"""
-        <div style='background:{bg};border-radius:8px;
-                    padding:12px;margin-bottom:10px'>
-        <p style='font-size:13px;font-weight:600;
-                  color:{fg};margin:0'>{nombre}</p>
-        <p style='font-size:12px;color:{fg};margin:2px 0'>{estado}</p>
-        <p style='font-size:11px;color:#888780;margin:0'>{detalle}</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-st.divider()
-
+        with st.expander(f"{estado[:1]}  {nombre}", expanded=False):
+            st.markdown(f"""
+            <div style='background:{bg};border-radius:6px;padding:10px'>
+            <p style='font-size:12px;font-weight:600;color:{fg};margin:0 0 4px 0'>
+            {estado}</p>
+            <p style='font-size:11px;color:#888780;margin:0 0 8px 0'>{detalle}</p>
+            <p style='font-size:12px;color:{fg};margin:0'>{tooltip}</p>
+            </div>""", unsafe_allow_html=True)
 # ── Explorador de activo ──────────────────────────────────
 st.subheader("🔍 Explorador de Activo — Condiciones Operacionales")
 
@@ -273,7 +359,7 @@ st.divider()
 
 # ── FFS Assessment — API 579 Level 1 ─────────────────────
 st.subheader("🔩 FFS Assessment — API 579-1/ASME FFS-1 Level 1")
-st.cache_resource.clear()
+#st.cache_resource.clear()
 
 @st.cache_resource
 def load_ffs_engine():
