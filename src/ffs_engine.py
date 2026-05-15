@@ -83,16 +83,17 @@ class FFSEngine:
     def _calc_thickness(self, a: dict, current_year: int = 2024) -> tuple:
         years_service    = current_year - int(a['install_year'])
         years_since_insp = current_year - int(a['last_inspection_year'])
-
-    # Usar t_estimated del RBI si está disponible — más confiable que CR×años
-        if 't_estimated' in a and a['t_estimated'] > 0:
-            t_actual = float(a['t_estimated'])
-        else:
+        # Usar t_estimated del RBI si está disponible
+        try:
+            t_estimated = float(a['t_estimated'])
+            t_actual = t_estimated if t_estimated > 0 else None
+        except (KeyError, ValueError, TypeError):
+            t_actual = None
+        if t_actual is None:
             t_loss   = a['cr_mean'] * years_since_insp
             t_actual = a['nominal_thickness_mm'] - t_loss
-
-        wall_exhausted = t_actual <= a['tmin_mm']  # agotada si ya pasó t_min
-        t_actual = max(t_actual, 0.0)
+        wall_exhausted = t_actual <= a['tmin_mm']
+        t_actual       = max(t_actual, 0.0)
         return t_actual, years_service, years_since_insp, wall_exhausted
 
     # ── 2. MAWP — API 579 Eq. 4.3 (cilindro a presión) ───────
