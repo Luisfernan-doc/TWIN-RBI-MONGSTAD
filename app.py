@@ -273,7 +273,7 @@ st.divider()
 
 # ── FFS Assessment — API 579 Level 1 ─────────────────────
 st.subheader("🔩 FFS Assessment — API 579-1/ASME FFS-1 Level 1")
-#st.cache_resource.clear()
+st.cache_resource.clear()
 
 @st.cache_resource
 def load_ffs_engine():
@@ -406,6 +406,99 @@ if ffs_ok:
         st.warning(f"⚠️ **SSC/HIC activo** — {r.ssc_status}. "
                    "El PFI no captura fractura fragil. "
                    "Requiere WFMT/RT y evaluacion NACE MR0175.")
+        
+        # ── Living RBI Bayesiano ──────────────────────────────────
+st.divider()
+st.subheader("🧮 Living RBI Bayesiano — Intervalos de Inspección Dinámicos")
+st.caption("PoF actualizada combinando Random Forest (prior) + "
+           "tasa de corrosión SCADA (likelihood) mediante PyMC 5.x")
+
+@st.cache_data
+def load_living_rbi():
+    return pd.read_csv("data/processed/living_rbi_results.csv")
+
+try:
+    df_lrbi = load_living_rbi()
+    lrbi_ok = True
+except Exception as e:
+    st.error(f"Error cargando Living RBI: {e}")
+    lrbi_ok = False
+
+if lrbi_ok:
+
+    COLOR_MAP_LRBI = {
+        'Critical': '#A32D2D',
+        'High':     '#D85A30',
+        'Medium':   '#BA7517',
+        'Low':      '#1D9E75',
+    }
+
+    # ── Métricas resumen ──────────────────────────────────
+    c1,c2,c3,c4 = st.columns(4)
+    c1.metric("Activos evaluados",    f"{len(df_lrbi)}")
+    c2.metric("Inspección 3 meses",   f"{(df_lrbi['insp_interval_mo']==3).sum()} activos")
+    c3.metric("Inspección 6 meses",   f"{(df_lrbi['insp_interval_mo']==6).sum()} activos")
+    c4.metric("Inspección 12 meses",  f"{(df_lrbi['insp_interval_mo']==12).sum()} activos")
+
+    st.markdown("---")
+    col_tabla, col_chart = st.columns([1, 1])
+
+    # ── Tabla prior vs posterior ──────────────────────────
+    with col_tabla:
+        st.markdown("**PoF Prior (RF) vs Posterior (Bayesiano)**")
+        for _, row in df_lrbi.sort_values('pof_posterior',
+                                           ascending=False).iterrows():
+            color  = COLOR_MAP_LRBI.get(row['risk_label'], '#888780')
+            delta  = row['pof_update']
+            arrow  = '↑' if delta > 0 else '↓'
+            st.markdown(f"""
+            <div style='background:{color}22;border-left:3px solid {color};
+                        border-radius:4px;padding:6px 10px;margin-bottom:4px;
+                        display:flex;justify-content:space-between'>
+            <span style='font-weight:600;color:{color}'>{row['tag']}</span>
+            <span style='font-size:12px'>
+                Prior: {row['pof_prior']:.4f} →
+                <b>Posterior: {row['pof_posterior']:.3f}</b>
+                <span style='color:{"#A32D2D" if delta>0 else "#1D9E75"}'>
+                {arrow} {abs(delta):.3f}</span>
+            </span>
+            <span style='font-size:12px;color:{color}'>
+                {row['insp_interval_mo']} meses</span>
+            </div>""", unsafe_allow_html=True)
+
+    # ── Gráfico intervalos ────────────────────────────────
+    with col_chart:
+        st.markdown("**Intervalo de inspección óptimo por activo**")
+        df_sorted = df_lrbi.sort_values('insp_interval_mo')
+        bar_colors = [
+            '#A32D2D' if i<=3 else '#D85A30' if i<=6
+            else '#BA7517' if i<=12 else '#1D9E75'
+            for i in df_sorted['insp_interval_mo']
+        ]
+        fig_lrbi = go.Figure(go.Bar(
+            x=df_sorted['insp_interval_mo'],
+            y=df_sorted['tag'],
+            orientation='h',
+            marker_color=bar_colors,
+            text=[f"{i} meses" for i in df_sorted['insp_interval_mo']],
+            textposition='outside',
+        ))
+        fig_lrbi.add_vline(x=6,  line_dash='dot', line_color='#D85A30',
+                           annotation_text='6m')
+        fig_lrbi.add_vline(x=12, line_dash='dot', line_color='#BA7517',
+                           annotation_text='12m')
+        fig_lrbi.update_layout(
+            height=340, plot_bgcolor='#F8F8F8',
+            xaxis=dict(title='Meses', range=[0, 28]),
+            margin=dict(t=10, b=10, l=10, r=60),
+            showlegend=False
+        )
+        st.plotly_chart(fig_lrbi, use_container_width=True)
+
+    # ── Nota metodológica ─────────────────────────────────
+    st.info("📊 **Metodología:** Prior Beta calibrada desde PoF del Random Forest · "
+            "Likelihood Binomial desde tasa de corrosión SCADA · "
+            "Posterior calculada con NUTS sampler (PyMC 5.x · 2,000 muestras · 2 cadenas)")
 
 st.divider()
 st.caption("TWIN-RBI Mongstad · Luis Fernando Carvallo · "
