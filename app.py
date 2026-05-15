@@ -273,7 +273,7 @@ st.divider()
 
 # ── FFS Assessment — API 579 Level 1 ─────────────────────
 st.subheader("🔩 FFS Assessment — API 579-1/ASME FFS-1 Level 1")
-st.cache_resource.clear()
+#st.cache_resource.clear()
 
 @st.cache_resource
 def load_ffs_engine():
