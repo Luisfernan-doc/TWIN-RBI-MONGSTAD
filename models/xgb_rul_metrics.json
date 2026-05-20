@@ -12,21 +12,21 @@
     "MAPE": 6.48
   },
   "optimized": {
-    "MAE": 0.2365,
-    "RMSE": 0.3842,
-    "R2": 0.9995,
-    "MAPE": 52.87,
+    "MAE": 0.2249,
+    "RMSE": 0.3834,
+    "R2": 0.9996,
+    "MAPE": 41.3,
     "optuna_trials": 60,
     "best_params": {
-      "n_estimators": 787,
+      "n_estimators": 783,
       "max_depth": 3,
-      "learning_rate": 0.05534441697902391,
-      "subsample": 0.942160799851946,
-      "colsample_bytree": 0.9570531095226537,
-      "min_child_weight": 1,
-      "gamma": 0.22682723139585698,
-      "reg_alpha": 0.42448751342111435,
-      "reg_lambda": 1.0376109928428165e-06
+      "learning_rate": 0.045854368517185294,
+      "subsample": 0.8831604636540767,
+      "colsample_bytree": 0.9438763409869122,
+      "min_child_weight": 3,
+      "gamma": 0.19239019311672062,
+      "reg_alpha": 2.383629043142624e-05,
+      "reg_lambda": 0.000511987150782416
     }
   }
 }
